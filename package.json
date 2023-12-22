@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "server.js",
 	"scripts": {
-		"start": "ts-node src/server.ts",
+		"start": "ts-node -r tsconfig-paths/register src/server.ts",
 		"dev": "set NODE_ENV=development&& nodemon --watch \"src/**\" --ext \"ts,tsx,json,css\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node -r tsconfig-paths/register src/server.ts\""
 	},
 	"keywords": [],
