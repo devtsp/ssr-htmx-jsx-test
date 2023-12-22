@@ -15,14 +15,20 @@ export function loginForm({
 		>
 			<label for="email">
 				Email
-				<input type="text" id="email" name="email" class="border" />
+				<input type="text" id="email" name="email" class="border" hx-preserve />
 				{errors?.email ? (
 					<span class="login__error">{errors.email}</span>
 				) : null}
 			</label>
 			<label for="password">
 				Password
-				<input type="password" id="password" name="password" class="border" />
+				<input
+					type="password"
+					id="password"
+					name="password"
+					class="border"
+					hx-preserve
+				/>
 				{errors?.password ? (
 					<span class="login__error">{errors.password}</span>
 				) : null}

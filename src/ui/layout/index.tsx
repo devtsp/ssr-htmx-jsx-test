@@ -1,6 +1,16 @@
 import * as elements from 'typed-html';
 
-export function index({ body, title }: { body: string; title: string }) {
+import { navbar } from './navbar';
+
+export function index({
+	body,
+	title,
+	publicRoute = false,
+}: {
+	body: string;
+	title: string;
+	publicRoute?: boolean;
+}) {
 	return (
 		<html lang="en">
 			<head>
@@ -14,9 +24,11 @@ export function index({ body, title }: { body: string; title: string }) {
 				></script>
 				{/* LOADING STATES EXT */}
 				<script src="https://unpkg.com/htmx.org/dist/ext/loading-states.js"></script>
+				{/* CSS */}
 				<link rel="stylesheet" href="index.css" />
 				<title>{title}</title>
 			</head>
+			{publicRoute ? null : navbar()}
 			<body hx-ext="loading-states">{body}</body>
 		</html>
 	);

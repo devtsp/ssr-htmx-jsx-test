@@ -27,13 +27,20 @@ if (isDev) {
 }
 
 // MIDDLEWARE
-// app.use((req, res, next) => {
-// 	if (!req.cookies.user && !req.path.includes('login')) {
-// 		res.redirect(ROUTES.PAGES.LOGIN);
-// 	} else {
-// 		next();
-// 	}
-// });
+// auth mock
+app.use(async (req, res, next) => {
+	if (!req.cookies.user && !req.path.includes('login')) {
+		res.header('HX-Redirect', ROUTES.PAGES.LOGIN).send();
+	} else {
+		next();
+	}
+});
+
+// throttle mock
+app.use(async (req, res, next) => {
+	await wait(2000);
+	next();
+});
 
 function wait(n: number) {
 	return new Promise<void>(res =>
@@ -47,8 +54,6 @@ function wait(n: number) {
 app.post(ROUTES.API.LOGIN, async (req, res) => {
 	const errors: Record<string, string> = {};
 
-	await wait(3000);
-
 	// validate creds
 	if (req.body.email !== 'admin') {
 		errors.email = 'Wrong email';
@@ -60,9 +65,19 @@ app.post(ROUTES.API.LOGIN, async (req, res) => {
 	if (Object.keys(errors).length > 0) {
 		res.send(loginForm({ errors }));
 	} else {
-		res.cookie('user', 'admin');
+		res.cookie('user', 'admin', {
+			httpOnly: true, // Only http no js (for security)
+			sameSite: 'none',
+			secure: true, // 'secure: true' prop will need to be removed when testing refresh token with ThunderClient
+			maxAge: 24 * 60 * 60 * 1000, // 24hs
+		});
 		res.header('HX-Redirect', ROUTES.PAGES.HOME).send();
 	}
+});
+
+app.post(ROUTES.API.LOGOUT, async (req, res) => {
+	res.clearCookie('user');
+	res.header('HX-Redirect', ROUTES.PAGES.LOGIN).send();
 });
 
 // PAGE ROUTES

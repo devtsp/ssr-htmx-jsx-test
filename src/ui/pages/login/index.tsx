@@ -4,5 +4,5 @@ import { index } from '../../layout';
 import { loginForm } from './loginForm';
 
 export function loginPage() {
-	return index({ body: loginForm(), title: 'Login' });
+	return index({ body: loginForm(), title: 'Login', publicRoute: true });
 }
