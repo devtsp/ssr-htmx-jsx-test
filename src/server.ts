@@ -30,7 +30,7 @@ if (isDev) {
 // auth mock
 app.use(async (req, res, next) => {
 	if (!req.cookies.user && !req.path.includes('login')) {
-		res.header('HX-Redirect', ROUTES.PAGES.LOGIN).send();
+		res.redirect(302, ROUTES.PAGES.LOGIN);
 	} else {
 		next();
 	}
